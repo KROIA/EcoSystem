@@ -8,7 +8,7 @@
 #include "Simulator/Entity.h"
 
 
-class ECO_SYSTEM_EXPORT_EXPORT UI_Entity : public QWidget
+class ECO_SYSTEM_EXPORT UI_Entity : public QWidget
 {
 	Q_OBJECT
 

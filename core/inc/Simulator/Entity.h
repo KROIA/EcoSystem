@@ -5,7 +5,7 @@
 
 namespace EcoSystem
 {
-	class ECO_SYSTEM_EXPORT_EXPORT Entity: public QSFML::Objects::CanvasObject
+	class ECO_SYSTEM_EXPORT Entity: public QSFML::Objects::CanvasObject
 	{
 		class SelectorButton;
 		friend SelectorButton;

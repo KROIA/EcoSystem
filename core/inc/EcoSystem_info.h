@@ -24,7 +24,7 @@ namespace EcoSystem
 
 /// USER_SECTION_END
 
-	class ECO_SYSTEM_EXPORT_EXPORT LibraryInfo
+	class ECO_SYSTEM_EXPORT LibraryInfo
 	{
 		LibraryInfo() = delete;
 		LibraryInfo(const LibraryInfo&) = delete;

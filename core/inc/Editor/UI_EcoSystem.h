@@ -11,7 +11,7 @@
 
 #include "Simulator/Simulator_incs.h"
 
-class ECO_SYSTEM_EXPORT_EXPORT UI_EcoSystem : public QWidget
+class ECO_SYSTEM_EXPORT UI_EcoSystem : public QWidget
 {
 	Q_OBJECT
 

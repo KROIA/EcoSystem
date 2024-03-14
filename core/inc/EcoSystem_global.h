@@ -11,13 +11,13 @@
 #ifndef BUILD_STATIC
 #pragma message("ECOSYSTEM_LIB is a shared library")
 # if defined(ECOSYSTEM_LIB)
-#  define ECO_SYSTEM_EXPORT_EXPORT __declspec(dllexport)
+#  define ECO_SYSTEM_EXPORT __declspec(dllexport)
 # else
-#  define ECO_SYSTEM_EXPORT_EXPORT __declspec(dllimport)
+#  define ECO_SYSTEM_EXPORT __declspec(dllimport)
 # endif
 #else 
 #pragma message("ECOSYSTEM_LIB is a static library")
-# define ECO_SYSTEM_EXPORT_EXPORT
+# define ECO_SYSTEM_EXPORT
 #endif
 
 /// USER_SECTION_START 2
