@@ -3,11 +3,16 @@
 #endif
 #include <iostream>
 #include "EcoSystem.h"
+#include <iostream>
+#include "tests.h"
 
 #ifdef QT_WIDGETS_ENABLED
 #include <QWidget>
 #endif
 
+// Instantiate Tests here:
+// TEST_INSTANTIATE(Test_simple); // Where Test_simple is a derived class from the Test class
+TEST_INSTANTIATE(TST_simple); 
 
 int main(int argc, char* argv[])
 {
@@ -21,6 +26,12 @@ int main(int argc, char* argv[])
 #endif
 
 	EcoSystem::LibraryInfo::printInfo();
+
+	std::cout << "Running "<< Test::getTests().size() << " tests...\n";
+	Test::TestResults results;
+	Test::runAllTests(results);
+	Test::printResults(results);
+
 #ifdef QT_WIDGETS_ENABLED
 	QWidget* widget = EcoSystem::LibraryInfo::createInfoWidget();
 	if (widget)
