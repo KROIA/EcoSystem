@@ -1,4 +1,4 @@
-﻿#include "test.h"
+#include "test.h"
 #include <iostream>
 #include <windows.h>
 

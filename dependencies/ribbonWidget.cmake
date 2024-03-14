@@ -22,3 +22,4 @@ FetchContent_MakeAvailable(${LIB_NAME})
 list(APPEND DEPENDENCIES_FOR_SHARED_LIB RibbonWidget_static)
 list(APPEND DEPENDENCIES_FOR_STATIC_LIB RibbonWidget_static)
 list(APPEND DEPENDENCIES_FOR_STATIC_PROFILE_LIB RibbonWidget_static_profile) # only use for static profiling profile
+
