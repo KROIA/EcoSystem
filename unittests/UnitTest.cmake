@@ -1,10 +1,10 @@
-## description: simple library to store application settings
+## description: simple library create unit tests
 include(FetchContent)
 
 # Define the git repository and tag to download from
-set(LIB_NAME AppSettings)
-set(GIT_REPO https://github.com/KROIA/AppSettings.git)
-set(GIT_TAG main)
+set(LIB_NAME UnitTest)								
+set(GIT_REPO https://github.com/KROIA/UnitTest.git)	
+set(GIT_TAG main)									
 
 FetchContent_Declare(
     ${LIB_NAME}
@@ -12,8 +12,8 @@ FetchContent_Declare(
     GIT_TAG        ${GIT_TAG}
 )
 
-set(${LIB_NAME}_NO_EXAMPLES True)
-set(${LIB_NAME}_NO_UNITTESTS True)
+set(${LIB_NAME}_NO_EXAMPLES True)						# Disables the examlpes of the library
+set(${LIB_NAME}_NO_UNITTESTS True)						# Disables the unittests of the library
 message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
 FetchContent_MakeAvailable(${LIB_NAME})
 

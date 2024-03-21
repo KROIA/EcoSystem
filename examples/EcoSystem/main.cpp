@@ -22,15 +22,13 @@ int main(int argc, char* argv[])
 #endif
 
 	EcoSystem::LibraryInfo::printInfo();
-	QApplication a(argc, argv);
 	EcoSystemCanvas w;
 	w.show();
-	return a.exec();
 
 #ifdef QT_WIDGETS_ENABLED
-	QWidget* widget = EcoSystem::LibraryInfo::createInfoWidget();
-	if (widget)
-		widget->show();
+	//QWidget* widget = EcoSystem::LibraryInfo::createInfoWidget();
+	//if (widget)
+	//	widget->show();
 #endif
 #ifdef QT_ENABLED
 	return app.exec();

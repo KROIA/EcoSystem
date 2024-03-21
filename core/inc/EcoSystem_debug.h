@@ -6,16 +6,16 @@
 
 // Debugging
 #ifdef NDEBUG
-#define ES_CONSOLE(msg)
-#define ES_CONSOLE_FUNCTION(msg)
+	#define ES_CONSOLE(msg)
+	#define ES_CONSOLE_FUNCTION(msg)
 #else
-#include <iostream>
+	#include <iostream>
 
-#define ES_DEBUG
-#define ES_CONSOLE_STREAM std::cout
+	#define ES_DEBUG
+	#define ES_CONSOLE_STREAM std::cout
 
-#define ES_CONSOLE(msg) ES_CONSOLE_STREAM << msg;
-#define ES_CONSOLE_FUNCTION(msg) ES_CONSOLE_STREAM << __PRETTY_FUNCTION__ << " " << msg;
+	#define ES_CONSOLE(msg) ES_CONSOLE_STREAM << msg;
+	#define ES_CONSOLE_FUNCTION(msg) ES_CONSOLE_STREAM << __PRETTY_FUNCTION__ << " " << msg;
 #endif
 
 /// USER_SECTION_START 2
@@ -23,33 +23,33 @@
 /// USER_SECTION_END
 
 #ifdef ES_PROFILING
-#include "easy/profiler.h"
-#include <easy/arbitrary_value.h> // EASY_VALUE, EASY_ARRAY are defined here
+	#include "easy/profiler.h"
+	#include <easy/arbitrary_value.h> // EASY_VALUE, EASY_ARRAY are defined here
 
-#define ES_PROFILING_BLOCK_C(text, color) EASY_BLOCK(text, color)
-#define ES_PROFILING_NONSCOPED_BLOCK_C(text, color) EASY_NONSCOPED_BLOCK(text, color)
-#define ES_PROFILING_END_BLOCK EASY_END_BLOCK
-#define ES_PROFILING_FUNCTION_C(color) EASY_FUNCTION(color)
-#define ES_PROFILING_BLOCK(text, colorStage) ES_PROFILING_BLOCK_C(text,profiler::colors::  colorStage)
-#define ES_PROFILING_NONSCOPED_BLOCK(text, colorStage) ES_PROFILING_NONSCOPED_BLOCK_C(text,profiler::colors::  colorStage)
-#define ES_PROFILING_FUNCTION(colorStage) ES_PROFILING_FUNCTION_C(profiler::colors:: colorStage)
-#define ES_PROFILING_THREAD(name) EASY_THREAD(name)
+	#define ES_PROFILING_BLOCK_C(text, color) EASY_BLOCK(text, color)
+	#define ES_PROFILING_NONSCOPED_BLOCK_C(text, color) EASY_NONSCOPED_BLOCK(text, color)
+	#define ES_PROFILING_END_BLOCK EASY_END_BLOCK
+	#define ES_PROFILING_FUNCTION_C(color) EASY_FUNCTION(color)
+	#define ES_PROFILING_BLOCK(text, colorStage) ES_PROFILING_BLOCK_C(text,profiler::colors::  colorStage)
+	#define ES_PROFILING_NONSCOPED_BLOCK(text, colorStage) ES_PROFILING_NONSCOPED_BLOCK_C(text,profiler::colors::  colorStage)
+	#define ES_PROFILING_FUNCTION(colorStage) ES_PROFILING_FUNCTION_C(profiler::colors:: colorStage)
+	#define ES_PROFILING_THREAD(name) EASY_THREAD(name)
 
-#define ES_PROFILING_VALUE(name, value) EASY_VALUE(name, value)
-#define ES_PROFILING_TEXT(name, value) EASY_TEXT(name, value)
+	#define ES_PROFILING_VALUE(name, value) EASY_VALUE(name, value)
+	#define ES_PROFILING_TEXT(name, value) EASY_TEXT(name, value)
 
 #else
-#define ES_PROFILING_BLOCK_C(text, color)
-#define ES_PROFILING_NONSCOPED_BLOCK_C(text, color)
-#define ES_PROFILING_END_BLOCK
-#define ES_PROFILING_FUNCTION_C(color)
-#define ES_PROFILING_BLOCK(text, colorStage)
-#define ES_PROFILING_NONSCOPED_BLOCK(text, colorStage)
-#define ES_PROFILING_FUNCTION(colorStage)
-#define ES_PROFILING_THREAD(name)
+	#define ES_PROFILING_BLOCK_C(text, color)
+	#define ES_PROFILING_NONSCOPED_BLOCK_C(text, color)
+	#define ES_PROFILING_END_BLOCK
+	#define ES_PROFILING_FUNCTION_C(color)
+	#define ES_PROFILING_BLOCK(text, colorStage)
+	#define ES_PROFILING_NONSCOPED_BLOCK(text, colorStage)
+	#define ES_PROFILING_FUNCTION(colorStage)
+	#define ES_PROFILING_THREAD(name)
 
-#define ES_PROFILING_VALUE(name, value)
-#define ES_PROFILING_TEXT(name, value)
+	#define ES_PROFILING_VALUE(name, value)
+	#define ES_PROFILING_TEXT(name, value)
 #endif
 
 // Special expantion tecniques are required to combine the color name

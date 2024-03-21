@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../test.h"
+#include "UnitTest.h"
 #include <QObject>
 #include <QCoreapplication>
 
@@ -8,7 +8,7 @@
 
 
 
-class TST_simple : public Test
+class TST_simple : public UnitTest::Test
 {
 	TEST_CLASS(TST_simple)
 public:
