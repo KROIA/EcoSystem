@@ -85,10 +85,10 @@ namespace EcoSystem
        // qDebug() << defaultEditor->toString().c_str();
 
 
-        EcoSystem::Entity* e = new EcoSystem::Grass();
-        m_scene->addObject(e);
+        //EcoSystem::Entity* e = new EcoSystem::Grass();
+        //m_scene->addObject(e);
 
-		EcoSystem::Map* map = new EcoSystem::Map(sf::Vector2u(10,10),sf::Vector2f(1,1));
+		EcoSystem::Map* map = new EcoSystem::Map(sf::Vector2u(500,500),sf::Vector2f(1,1));
 		m_scene->addObject(map);
 
         m_scene->start();

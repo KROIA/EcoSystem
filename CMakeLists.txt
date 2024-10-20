@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.20)
 
 
 ## INFO
-## Template version: 1.3.0
+## Template version: 1.3.1
 ##
 ## This is a template for a CMake project.
 ## It is designed to be used with the Visual Studio
@@ -86,9 +86,17 @@ set_if_not_defined(COMPILE_UNITTESTS ON)					# <AUTO_REPLACED>
 #    TEST_DEFINE
 # )
 # 
-list(APPEND USER_SPECIFIC_DEFINES 
-    LOGGER_ENABLE_DEBUG_BREAK_ON_ERROR
+list(APPEND USER_SPECIFIC_DEFINES)
 
+# User specific defines which are added as defines to the compiler
+# Note: The defines are available for all dependencies and the library.
+# Example:
+# list(APPEND USER_SPECIFIC_GLOBAL_DEFINES 
+#    TEST_DEFINE
+# )
+# 
+list(APPEND USER_SPECIFIC_GLOBAL_DEFINES
+  LOGGER_ENABLE_DEBUG_BREAK_ON_ERROR
 )
 
 
@@ -138,6 +146,10 @@ link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
 ## USER_SECTION_END
 
+
+foreach(DEF ${USER_SPECIFIC_GLOBAL_DEFINES})
+	add_compile_definitions(${DEF})
+endforeach()
 
 include(cmake/QtLocator.cmake)
 include(cmake/dependencies.cmake)

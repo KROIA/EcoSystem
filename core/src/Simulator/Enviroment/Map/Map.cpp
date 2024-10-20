@@ -52,12 +52,12 @@ namespace EcoSystem
 	{
 		QSFML::Utilities::PerlinNoise perlinNoise(0);
 
-
+		float scale = 1;
 		for (unsigned int y = 0; y < m_dim.y; y++)
 		{
 			for (unsigned int x = 0; x < m_dim.x; x++)
 			{
-				float value = perlinNoise.noise(x / 10.0f, y / 10.0f, 2, sf::Vector2u(x,y));
+				float value = perlinNoise.noise(x* scale, y* scale, 5, m_dim)*10;
 				MapTileType type = MapTileType::Grass;
 				if (value < 0.2f)
 					type = MapTileType::Water;
@@ -102,7 +102,7 @@ namespace EcoSystem
 		: QSFML::Components::Drawable("MapPainter")
 		, m_map(map)
 	{
-		std::string textureBasePath = SaveSystem::ApplicationSettings::getAssetSettings().getTexturePath() + "/"+ s_mapTileTexturePath+"/";
+		std::string textureBasePath = s_mapTileTexturePath+"/";
 		for (int i = 0; i < static_cast<int>(MapTileType::Count); i++)
 		{
 			m_textures[i] = &QSFML::Assets::TextureManager::getTexture(textureBasePath + toString(static_cast<MapTileType>(i)) + ".png");
