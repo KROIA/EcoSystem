@@ -4,6 +4,7 @@
 namespace EcoSystem
 {
 	Entity* Entity::s_selectedEntity = nullptr;
+	Log::LogObject Entity::s_log(EcoSystem::Logger::getID(), "Entity");
 
 	Entity::Entity(const std::string& name, GameObject* parent)
 		: GameObject(name, parent)
@@ -27,6 +28,7 @@ namespace EcoSystem
 
 	void Entity::selected()
 	{
+		s_log.logInfo("Entity selected: " + getName());
 		if (s_selectedEntity)
 		{
 			if (s_selectedEntity == this)
@@ -39,6 +41,7 @@ namespace EcoSystem
 	}
 	void Entity::deselect()
 	{
+		s_log.logInfo("Entity deselected: " + getName());
 		s_selectedEntity = nullptr;
 		UI_EcoSystem::setSelectedEntity(s_selectedEntity);
 	}
@@ -105,7 +108,7 @@ namespace EcoSystem
 		bool isPressed = sf::Mouse::isButtonPressed(getTriggerButton());
 		sf::Vector2f pos = getParent()->getMouseWorldPosition();
 
-		QSFML::Utilities::AABB box(pos, m_buttonSize);
+		QSFML::Utilities::AABB box(getParent()->getGlobalPosition(), m_buttonSize);
 		if (m_attachedToCollider)
 			box = m_parent->getBoundingBox();
 		bool isInside = box.contains(pos);

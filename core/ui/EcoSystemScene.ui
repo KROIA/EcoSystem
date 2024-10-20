@@ -22,11 +22,23 @@
      <x>0</x>
      <y>0</y>
      <width>714</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionApplication_settings"/>
+   </widget>
+   <addaction name="menuEdit"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionApplication_settings">
+   <property name="text">
+    <string>Application settings</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

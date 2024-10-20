@@ -17,6 +17,7 @@ namespace EcoSystem
 		~Entity();
 
 		OBJECT_DECL(Entity);
+		static Log::LogObject& getLogger() { return s_log; }
 
 
 		void selected();
@@ -31,6 +32,11 @@ namespace EcoSystem
 	
 		void onClickButtonFallingEdge();
 		void onClickButtonRisingEdge();
+
+		void setSelectButtonSize(const sf::Vector2f& size)
+		{
+			m_selectButton->setSize(size);
+		}
 
 	private:
 		class SelectorButton : public QSFML::Components::MousePressEvent
@@ -62,5 +68,6 @@ namespace EcoSystem
 		SelectorButton* m_selectButton;
 
 		static Entity* s_selectedEntity;
+		static Log::LogObject s_log;
 	};
 }

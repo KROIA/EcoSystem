@@ -11,27 +11,32 @@
 
 #include "Simulator/Simulator_incs.h"
 
-class ECO_SYSTEM_EXPORT UI_EcoSystem : public QWidget
+namespace EcoSystem
 {
-	Q_OBJECT
-
-public:
-	UI_EcoSystem(QWidget *parent = nullptr);
-	~UI_EcoSystem();
-
-
-	static void setSelectedEntity(EcoSystem::Entity* e);
-
-	void stop();
-
-private:
-	void setupScene();
+	class ECO_SYSTEM_EXPORT UI_EcoSystem : public QWidget
+	{
+		Q_OBJECT
+		
+	public:
+		UI_EcoSystem(QWidget* parent = nullptr);
+		~UI_EcoSystem();
+		static UI_EcoSystem& getInstance();
 
 
-	Ui::UI_EcoSystem ui;
+		static void setSelectedEntity(EcoSystem::Entity* e);
 
-	QSFML::Scene* m_scene;
-	UI_Entity* m_ui_entity;
+		static void start();
+		static void stop();
 
-	static UI_EcoSystem* s_instance;
-};
+	private:
+		void loadAssets();
+		void setupScene();
+
+
+		Ui::UI_EcoSystem ui;
+
+		QSFML::Scene* m_scene;
+		UI_Entity* m_ui_entity;
+
+	};
+}

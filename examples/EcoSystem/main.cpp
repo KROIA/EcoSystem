@@ -21,6 +21,9 @@ int main(int argc, char* argv[])
 	QApplication app(argc, argv);
 #endif
 
+	Log::UI::NativeConsoleView::createStaticInstance();
+	Log::UI::NativeConsoleView::getStaticInstance()->show();
+
 	EcoSystem::LibraryInfo::printInfo();
 	EcoSystemScene w;
 	w.show();

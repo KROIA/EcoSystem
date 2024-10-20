@@ -15,12 +15,15 @@ public:
     EcoSystemScene(QWidget* parent = nullptr);
     ~EcoSystemScene();
 
+private slots:
+	void on_actionApplication_settings_triggered();
+
 private:
     void closeEvent(QCloseEvent* event) override;
 
 
     Ui::EcoSystemScene* ui;
-    UI_EcoSystem* m_ui_simulator;
+    EcoSystem::UI_EcoSystem& m_ui_simulator;
     
     
 };
