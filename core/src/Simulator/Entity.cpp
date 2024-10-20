@@ -5,15 +5,15 @@ namespace EcoSystem
 {
 	Entity* Entity::s_selectedEntity = nullptr;
 
-	Entity::Entity(const std::string& name, CanvasObject* parent)
-		: CanvasObject(name, parent)
+	Entity::Entity(const std::string& name, GameObject* parent)
+		: GameObject(name, parent)
 	{
 		m_selectButton = new SelectorButton(this);
 		m_selectButton->setSize(sf::Vector2f(50, 50));
 		addComponent(m_selectButton);
 	}
-	Entity::Entity(const CanvasObject& other)
-		: CanvasObject(other)
+	Entity::Entity(const Entity& other)
+		: GameObject(other)
 	{
 		m_selectButton = new SelectorButton(this);
 		addComponent(m_selectButton);
@@ -23,7 +23,7 @@ namespace EcoSystem
 
 	}
 
-	CLONE_FUNC_IMPL(Entity);
+	OBJECT_IMPL(Entity);
 
 	void Entity::selected()
 	{

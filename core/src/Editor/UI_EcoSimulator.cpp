@@ -14,17 +14,17 @@ UI_EcoSystem::UI_EcoSystem(QWidget *parent)
 	ui.setupUi(this);
     s_instance = this;
 
-	m_canvas = nullptr;
+	m_scene = nullptr;
 
 	m_ui_entity = new UI_Entity(this);
 	ui.entity_frame->layout()->addWidget(m_ui_entity);
 
-	setupCanvas();
+	setupScene();
 }
 
 UI_EcoSystem::~UI_EcoSystem()
 {
-    delete m_canvas;
+    delete m_scene;
 }
 
 void UI_EcoSystem::setSelectedEntity(EcoSystem::Entity* e)
@@ -38,13 +38,13 @@ void UI_EcoSystem::setSelectedEntity(EcoSystem::Entity* e)
 
 void UI_EcoSystem::stop()
 {
-    if (m_canvas)
-        m_canvas->stop();
+    if (m_scene)
+        m_scene->stop();
 }
 
-void UI_EcoSystem::setupCanvas()
+void UI_EcoSystem::setupScene()
 {
-    CanvasSettings settings;
+    SceneSettings settings;
     //settings.layout.autoAjustSize = false;
     settings.layout.fixedSize = sf::Vector2u(300, 100);
     settings.contextSettings.antialiasingLevel = 8;
@@ -53,13 +53,15 @@ void UI_EcoSystem::setupCanvas()
     //settings.updateControlls.enablePaintLoop = false;
     //settings.updateControlls.enableEventLoop = false;
     //settings.updateControlls.enableUpdateLoop = false;
-    m_canvas = new Canvas(ui.canvas_widget, settings);
+    m_scene = new Scene(ui.scene_widget, settings);
 
     DefaultEditor* defaultEditor = new DefaultEditor();
-    m_canvas->addObject(defaultEditor);
+    m_scene->addObject(defaultEditor);
     qDebug() << defaultEditor->toString().c_str();
 
 
     EcoSystem::Entity* e = new EcoSystem::Entity();
-    m_canvas->addObject(e);
+    m_scene->addObject(e);
+
+    m_scene->start();
 }

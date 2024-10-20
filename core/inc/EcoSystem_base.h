@@ -6,6 +6,7 @@
 
 #include "EcoSystem_global.h"
 #include "EcoSystem_debug.h"
+#include "EcoSystem_info.h"
 
 /// USER_SECTION_START 2
 #include "QSFML_EditorWidget.h"

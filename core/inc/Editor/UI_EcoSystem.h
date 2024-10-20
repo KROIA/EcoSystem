@@ -25,12 +25,12 @@ public:
 	void stop();
 
 private:
-	void setupCanvas();
+	void setupScene();
 
 
 	Ui::UI_EcoSystem ui;
 
-	QSFML::Canvas* m_canvas;
+	QSFML::Scene* m_scene;
 	UI_Entity* m_ui_entity;
 
 	static UI_EcoSystem* s_instance;

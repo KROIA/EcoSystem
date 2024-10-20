@@ -5,18 +5,18 @@
 
 namespace EcoSystem
 {
-	class ECO_SYSTEM_EXPORT Entity: public QSFML::Objects::CanvasObject
+	class ECO_SYSTEM_EXPORT Entity: public QSFML::Objects::GameObject
 	{
 		class SelectorButton;
 		friend SelectorButton;
 		
 	public:
 		Entity(const std::string& name = "Entity",
-			CanvasObject* parent = nullptr);
-		Entity(const CanvasObject& other);
+			GameObject* parent = nullptr);
+		Entity(const Entity& other);
 		~Entity();
 
-		CLONE_FUNC_DEC(Entity) override;
+		OBJECT_DECL(Entity);
 
 
 		void selected();

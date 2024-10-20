@@ -4,22 +4,22 @@
 #include "Editor/UI_EcoSystem.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class EcoSystemCanvas; }
+namespace Ui { class EcoSystemScene; }
 QT_END_NAMESPACE
 
-class EcoSystemCanvas : public QMainWindow
+class EcoSystemScene : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    EcoSystemCanvas(QWidget* parent = nullptr);
-    ~EcoSystemCanvas();
+    EcoSystemScene(QWidget* parent = nullptr);
+    ~EcoSystemScene();
 
 private:
     void closeEvent(QCloseEvent* event) override;
 
 
-    Ui::EcoSystemCanvas* ui;
+    Ui::EcoSystemScene* ui;
     UI_EcoSystem* m_ui_simulator;
     
     

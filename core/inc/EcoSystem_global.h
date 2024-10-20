@@ -9,14 +9,14 @@
 // <LIBRARY NAME SHORT>=ES 
 //
 #ifndef BUILD_STATIC
-	#pragma message("ECOSYSTEM_LIB is a shared library")
+	//#pragma message("ECOSYSTEM_LIB is a shared library")
 	#if defined(ECOSYSTEM_LIB)
 		#define ECO_SYSTEM_EXPORT __declspec(dllexport)
 	#else
 		#define ECO_SYSTEM_EXPORT __declspec(dllimport)
 	#endif
 #else 
-	#pragma message("ECOSYSTEM_LIB is a static library")
+	//#pragma message("ECOSYSTEM_LIB is a static library")
 	#define ECO_SYSTEM_EXPORT
 #endif
 
@@ -25,9 +25,9 @@
 /// USER_SECTION_END
 
 #ifdef QT_ENABLED
-	#pragma message("QT is enabled")
+	//#pragma message("QT is enabled")
 	#ifdef QT_WIDGETS_ENABLED
-		#pragma message("QT_WIDGETS is enabled")
+		//#pragma message("QT_WIDGETS is enabled")
 	#endif
 #endif
 
@@ -62,6 +62,7 @@
 	#pragma warning (error : 4189) // Unused return value
 	#pragma warning (error : 4996) // unsafe function calls
 	#pragma warning (error : 4018) // signed/unsigned mismatch
+	#pragma warning (error : 4172) // Returning address of local temporary object
 #endif
 
 /// USER_SECTION_START 5

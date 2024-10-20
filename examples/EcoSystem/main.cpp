@@ -3,7 +3,7 @@
 #endif
 #include <iostream>
 #include "EcoSystem.h"
-#include "EcoSystemCanvas.h"
+#include "EcoSystemScene.h"
 
 #ifdef QT_WIDGETS_ENABLED
 #include <QWidget>
@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
 #endif
 
 	EcoSystem::LibraryInfo::printInfo();
-	EcoSystemCanvas w;
+	EcoSystemScene w;
 	w.show();
 
 #ifdef QT_WIDGETS_ENABLED
