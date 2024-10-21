@@ -90,7 +90,7 @@ namespace EcoSystem
         //EcoSystem::Entity* e = new EcoSystem::Grass();
         //m_scene->addObject(e);
 
-		EcoSystem::Map* map = new EcoSystem::Map(mapSize*5u,sf::Vector2f(0.2,0.2));
+		EcoSystem::Map* map = new EcoSystem::Map(mapSize*1u,sf::Vector2f(1,1));
 		m_scene->addObject(map);
 
         m_scene->start();

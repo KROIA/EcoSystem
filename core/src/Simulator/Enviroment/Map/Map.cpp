@@ -1,5 +1,6 @@
 #include "Simulator/Enviroment/Map/Map.h"
 #include "SaveSystem/ApplicationSettings.h"
+#include "FastNoiseLite.h"
 
 namespace EcoSystem
 {
@@ -54,9 +55,12 @@ namespace EcoSystem
 		logInfo("Map::generateMap()");
 		QSFML::Utilities::PerlinNoise perlinNoise(0);
 
-		float scale = 50;
+		float scale = 5;
 		static constexpr int resolutionCount = 20;
 		static constexpr bool useThread = true;
+
+		FastNoiseLite noise;
+		noise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2S);
 
 		if (useThread)
 		{
@@ -68,13 +72,14 @@ namespace EcoSystem
 			{
 				for (size_t x = 0; x < threadCount; x++)
 				{
-					threads.push_back(std::thread([this, x, y, chunkSize, scale, &perlinNoise]()
+					threads.push_back(std::thread([this, x, y, chunkSize, scale, &perlinNoise, &noise]()
 						{
 							for (size_t yy = 0; yy < chunkSize.y; yy++)
 							{
 								for (size_t xx = 0; xx < chunkSize.x; xx++)
 								{
-									float value = (perlinNoise.noise((x * chunkSize.x + xx) * scale, (y * chunkSize.y + yy) * scale, resolutionCount, m_dim) + 0.5);
+									//float value = (perlinNoise.noise((x * chunkSize.x + xx) * scale, (y * chunkSize.y + yy) * scale, resolutionCount, m_dim) + 0.5);
+									float value = (noise.GetNoise((x * chunkSize.x + xx) * scale, (y * chunkSize.y + yy) * scale));
 									
 									MapTileType type = MapTileType::Grass;
 									if (value < 0.2f)
