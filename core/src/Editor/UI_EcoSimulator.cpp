@@ -71,7 +71,7 @@ namespace EcoSystem
         SceneSettings settings;
         //settings.layout.autoAjustSize = false;
         settings.layout.fixedSize = sf::Vector2u(300, 100);
-        settings.contextSettings.antialiasingLevel = 8;
+        settings.contextSettings.antialiasingLevel = 0;
         settings.timing.frameTime = 0.02;
         //settings.updateControlls.enableMultithreading = false;
         //settings.updateControlls.enablePaintLoop = false;
@@ -79,7 +79,9 @@ namespace EcoSystem
         //settings.updateControlls.enableUpdateLoop = false;
         m_scene = new Scene(ui.scene_widget, settings);
 
-        DefaultEditor* defaultEditor = new DefaultEditor();
+		sf::Vector2u mapSize(1000, 1000);
+
+        DefaultEditor* defaultEditor = new DefaultEditor("Editor",sf::Vector2f(mapSize));
         defaultEditor->getCamera()->setMinZoom(0.001);
         m_scene->addObject(defaultEditor);
        // qDebug() << defaultEditor->toString().c_str();
@@ -88,7 +90,7 @@ namespace EcoSystem
         //EcoSystem::Entity* e = new EcoSystem::Grass();
         //m_scene->addObject(e);
 
-		EcoSystem::Map* map = new EcoSystem::Map(sf::Vector2u(500,500),sf::Vector2f(1,1));
+		EcoSystem::Map* map = new EcoSystem::Map(mapSize*5u,sf::Vector2f(0.2,0.2));
 		m_scene->addObject(map);
 
         m_scene->start();
