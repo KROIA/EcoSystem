@@ -71,6 +71,7 @@ namespace EcoSystem
 		void update(float deltaT);
 
 		void setTile(unsigned int x, unsigned int y, const MapTile& tile);
+		void setTile(unsigned int x, unsigned int y, MapTileType tile);
 		MapTile& getTile(unsigned int x, unsigned int y)
 		{
 			return m_tiles[y][x];

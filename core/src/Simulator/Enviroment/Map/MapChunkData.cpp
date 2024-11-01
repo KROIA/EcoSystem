@@ -61,6 +61,30 @@ namespace EcoSystem
 			break;
 		}
 	}
+	void MapChunkData::setTile(unsigned int x, unsigned int y, MapTileType tile)
+	{
+		MapChunkData::MapTile newTile;
+		newTile.type = tile; 
+		switch (newTile.type)
+		{
+		case MapTileType::Grass:
+			newTile.data.grass = MapChunkData::GrassTile();
+			break;
+		case MapTileType::Dirt:
+			newTile.data.dirt = MapChunkData::DirtTile();
+			break;
+		case MapTileType::Water:
+			newTile.data.water = MapChunkData::WaterTile();
+			break;
+		case MapTileType::Sand:
+			newTile.data.sand = MapChunkData::SandTile();
+			break;
+		case MapTileType::Rock:
+			newTile.data.rock = MapChunkData::RockTile();
+			break;
+		}
+		setTile(x, y, newTile);
+	}
 	void MapChunkData::updateBlock(unsigned int x, unsigned int y, float deltaT)
 	{
 		MapTile& tile = m_tiles[y][x];

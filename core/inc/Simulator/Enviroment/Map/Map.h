@@ -11,9 +11,7 @@ namespace EcoSystem
 	{
 		friend class MapPainter;
 	public:
-		
-
-
+		static Map* getInstance() { return s_instance; }
 		static Log::LogObject& getLogger();
 
 		Map(const sf::Vector2u &chunkCount, const std::string& name = "Map");
@@ -26,6 +24,9 @@ namespace EcoSystem
 
 		MapChunkData::MapTile& getTile(const sf::Vector2f& pos) const;
 		MapChunkData::MapTile& getTile(const sf::Vector2i& pos) const;
+		MapChunkData::MapTile& getTile(float x, float y) const;
+		void setTile(const sf::Vector2f& pos, const MapChunkData::MapTile& tile);
+		void setTile(const sf::Vector2f& pos, MapTileType type);
 
 		bool isInMap(const sf::Vector2f& pos) const;
 
@@ -39,5 +40,6 @@ namespace EcoSystem
 		std::vector<MapChunk*> m_chunks;
 
 		static const std::string s_mapTileTexturePath;
+		static Map* s_instance;
 	};
 }

@@ -48,53 +48,34 @@ namespace EcoSystem
 
 				float riverNoise = (0.92 - noise2Val) * 2;
 
-				int textureIndex = MapTileType::Dirt;
+				MapTileType tileType = MapTileType::Dirt;
 				float riverRange = 0.2;
 				if (riverNoise < riverRange)
 				{
 					if (riverNoise > 0)
 					{
-						textureIndex = MapTileType::Sand;
+						tileType = MapTileType::Sand;
 					}
 					else
 					{
-						textureIndex = MapTileType::Water;
+						tileType = MapTileType::Water;
 					}
 				}
 				else
 				{
 
 					if (value < 0.1f)
-						textureIndex = MapTileType::Water;
+						tileType = MapTileType::Water;
 					else if (value < 0.4f)
-						textureIndex = MapTileType::Sand;
+						tileType = MapTileType::Sand;
 					else if (value < 0.6f)
-						textureIndex = MapTileType::Dirt;
+						tileType = MapTileType::Dirt;
 					else if (value < 0.7f)
-						textureIndex = MapTileType::Rock;
+						tileType = MapTileType::Rock;
 
 				}
-				MapChunkData::MapTile tile;
-				tile.type = static_cast<MapTileType>(textureIndex);
-				switch (tile.type)
-				{
-				case MapTileType::Grass:
-					tile.data.grass = MapChunkData::GrassTile();
-					break;
-				case MapTileType::Dirt:
-					tile.data.dirt = MapChunkData::DirtTile();
-					break;
-				case MapTileType::Water:
-					tile.data.water = MapChunkData::WaterTile();
-					break;
-				case MapTileType::Sand:
-					tile.data.sand = MapChunkData::SandTile();
-					break;
-				case MapTileType::Rock:
-					tile.data.rock = MapChunkData::RockTile();
-					break;
-				}
-				chunkData->setTile(x, y, tile);
+				
+				chunkData->setTile(x, y, tileType);
 			}
 		}
 	}

@@ -12,6 +12,7 @@ namespace EcoSystem
 	// Folder name for the map tile textures
 	const std::string Map::s_mapTileTexturePath = "MapTiles.png";
 
+	Map* Map::s_instance = nullptr;
 	Log::LogObject& Map::getLogger()
 	{
 		static Log::LogObject s_log(EcoSystem::Logger::getID(), "Map");
@@ -22,6 +23,7 @@ namespace EcoSystem
 		: Entity(name)
 		, m_chunkCount(chunkCount)
 	{
+		s_instance = this;
 		m_chunkManager = new ChunkManager(Assets::TextureManager::getTexture(s_mapTileTexturePath), sf::Vector2u(5, 5));
 		m_chunkManager->setChunkFactory(Chunk::createFactory<MapChunk>());
 		generateMap();
@@ -71,12 +73,13 @@ namespace EcoSystem
 				}
 
 				}
-				
 			});
 	}
 
 	Map::~Map()
 	{
+		if (s_instance == this)
+			s_instance = nullptr;
 	}
 
 
@@ -114,7 +117,7 @@ namespace EcoSystem
 		Chunk* chunk = m_chunkManager->getChunk(pos);
 		if (chunk)
 		{
-			// Get the chunks relative po
+			// Get the chunks relative pos
 			return dynamic_cast<MapChunkData*>(chunk->getChunkData())->getTile(pos);
 		}
 		getLogger().logError("Failed to get tile type at position: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
@@ -133,12 +136,67 @@ namespace EcoSystem
 		Chunk* chunk = m_chunkManager->getChunk(posf);
 		if (chunk)
 		{
-			// Get the chunks relative po
+			// Get the chunks relative pos
 			return dynamic_cast<MapChunkData*>(chunk->getChunkData())->getTile(posf);
 		}
 		getLogger().logError("Failed to get tile type at position: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
 		static MapChunkData::MapTile dummy;
 		return dummy;
+	}
+	MapChunkData::MapTile& Map::getTile(float x, float y) const
+	{
+		sf::Vector2f pos(x,y);
+		if (!isInMap(pos))
+		{
+			getLogger().logWarning("Position is out of map bounds: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
+			static MapChunkData::MapTile dummy;
+			return dummy;
+		}
+		Chunk* chunk = m_chunkManager->getChunk(pos);
+		if (chunk)
+		{
+			// Get the chunks relative pos
+			return dynamic_cast<MapChunkData*>(chunk->getChunkData())->getTile(pos);
+		}
+		getLogger().logError("Failed to get tile type at position: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
+		static MapChunkData::MapTile dummy;
+		return dummy;
+	}
+	void Map::setTile(const sf::Vector2f& pos, const MapChunkData::MapTile& tile)
+	{
+		if (!isInMap(pos))
+		{
+			getLogger().logWarning("Position is out of map bounds: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
+			return;
+		}
+		Chunk* chunk = m_chunkManager->getChunk(pos);
+		if (chunk)
+		{
+			// Get the chunks relative pos
+			dynamic_cast<MapChunkData*>(chunk->getChunkData())->setTile(pos.x, pos.y, tile);
+		}
+		else
+		{
+			getLogger().logError("Failed to set tile at position: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
+		}
+	}
+	void Map::setTile(const sf::Vector2f& pos, MapTileType type)
+	{
+		if (!isInMap(pos))
+		{
+			getLogger().logWarning("Position is out of map bounds: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
+			return;
+		}
+		Chunk* chunk = m_chunkManager->getChunk(pos);
+		if (chunk)
+		{
+			// Get the chunks relative pos
+			dynamic_cast<MapChunkData*>(chunk->getChunkData())->setTile(pos.x,pos.y, type);
+		}
+		else
+		{
+			getLogger().logError("Failed to set tile type at position: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
+		}
 	}
 
 	bool Map::isInMap(const sf::Vector2f& pos) const
