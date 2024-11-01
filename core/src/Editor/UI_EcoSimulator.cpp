@@ -79,20 +79,16 @@ namespace EcoSystem
         //settings.updateControlls.enableUpdateLoop = false;
         m_scene = new Scene(ui.scene_widget, settings);
 
-		sf::Vector2u mapSize(1000, 1000);
+		sf::Vector2u mapChunkCount(5, 5);
 
-        DefaultEditor* defaultEditor = new DefaultEditor("Editor",sf::Vector2f(mapSize));
-        defaultEditor->getCamera()->setMinZoom(0.001);
+        DefaultEditor* defaultEditor = new DefaultEditor("Editor",sf::Vector2f(mapChunkCount * (unsigned)QSFML::Utilities::Chunk::CHUNK_SIZE));
+        defaultEditor->getGrid()->setEnabled(false);
+        defaultEditor->getCamera()->setMinZoom(0.1);
+        defaultEditor->getCamera()->setMaxZoom(10);
         m_scene->addObject(defaultEditor);
-       // qDebug() << defaultEditor->toString().c_str();
 
-
-        //EcoSystem::Entity* e = new EcoSystem::Grass();
-        //m_scene->addObject(e);
-
-		EcoSystem::Map* map = new EcoSystem::Map(mapSize*1u,sf::Vector2f(1,1));
+		EcoSystem::Map* map = new EcoSystem::Map(mapChunkCount);
 		m_scene->addObject(map);
-
         m_scene->start();
     }
 }
