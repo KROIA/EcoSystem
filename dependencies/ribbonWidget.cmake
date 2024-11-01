@@ -1,10 +1,10 @@
-## description: simple ribbon widget for QT applications
+## description: Simple ribbon widget for QT applications
 include(FetchContent)
 
 function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
     # Define the git repository and tag to download from
     set(LIB_NAME RibbonWidget)
-    set(LIB_MACRO_NAME RIBBON_WIDGET)
+    set(LIB_MACRO_NAME RIBBON_WIDGET_LIBRARY_AVAILABLE)
     set(GIT_REPO https://github.com/KROIA/RibbonWidget.git)
     set(GIT_TAG main)
 
@@ -16,6 +16,7 @@ function(dep LIBRARY_MACRO_NAME SHARED_LIB STATIC_LIB STATIC_PROFILE_LIB)
 
     set(${LIB_NAME}_NO_EXAMPLES True)
     set(${LIB_NAME}_NO_UNITTESTS True)
+
     message("Downloading dependency: ${LIB_NAME} from: ${GIT_REPO} tag: ${GIT_TAG}")
     FetchContent_MakeAvailable(${LIB_NAME})
 
