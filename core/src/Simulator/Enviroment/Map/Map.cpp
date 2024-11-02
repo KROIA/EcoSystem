@@ -30,7 +30,7 @@ namespace EcoSystem
 		setupPainter();
 
 
-		
+		/*
 		// Prints the current tile which is under the mouse
 		addUpdateFunction([this](GameObject& obj)
 			{
@@ -73,7 +73,7 @@ namespace EcoSystem
 				}
 
 				}
-			});
+			});*/
 	}
 
 	Map::~Map()
@@ -88,7 +88,7 @@ namespace EcoSystem
 	{
 		ES_GENERAL_PROFILING_FUNCTION(ES_COLOR_STAGE_1);
 		logInfo("Map::generateMap()");
-		sf::FloatRect mapBounds(0, 0, m_chunkCount.x * Chunk::CHUNK_SIZE, m_chunkCount.y * Chunk::CHUNK_SIZE);
+		sf::FloatRect mapBounds(0, 0, m_chunkCount.x * Chunk::CHUNK_SIZE-1, m_chunkCount.y * Chunk::CHUNK_SIZE-1);
 		m_chunkManager->loadChunk(mapBounds);
 
 		auto chunks = m_chunkManager->getChunks();

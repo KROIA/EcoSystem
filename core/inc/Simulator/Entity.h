@@ -21,9 +21,14 @@ namespace EcoSystem
 
 
 		void selected();
-		void deselect();
+		static void select(Entity* e);
+		static void deselect();
+		static Entity* getSelected() { return s_selectedEntity; }
 
 		void attachSelectorButtonToCollider(bool doesAttach);
+
+		virtual void drawGizmos(sf::RenderTarget& target, sf::RenderStates states) const;
+
 	protected:
 
 		//static void setSelected(Entity* e);

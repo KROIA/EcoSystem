@@ -35,6 +35,8 @@ namespace EcoSystem
 		void setupPainter();
 
 		sf::Vector2u m_chunkCount;
+
+
 		QSFML::Utilities::ChunkManager* m_chunkManager;
 		std::vector<MapChunkData*> m_chunkData;
 		std::vector<MapChunk*> m_chunks;

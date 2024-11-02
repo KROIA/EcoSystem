@@ -10,7 +10,7 @@ namespace EcoSystem
 		: GameObject(name, parent)
 	{
 		m_selectButton = new SelectorButton(this);
-		m_selectButton->setSize(sf::Vector2f(50, 50));
+		m_selectButton->setSize(sf::Vector2f(0, 0));
 		addComponent(m_selectButton);
 	}
 	Entity::Entity(const Entity& other)
@@ -28,20 +28,24 @@ namespace EcoSystem
 
 	void Entity::selected()
 	{
-		s_log.logInfo("Entity selected: " + getName());
+		select(this);		
+	}
+	void Entity::select(Entity* e)
+	{
+		if (!e || e == s_selectedEntity) [[unlikely]]
+			return;
+		s_log.logInfo("Entity selected: " + e->getName());
 		if (s_selectedEntity)
 		{
-			if (s_selectedEntity == this)
-				return;
-			s_selectedEntity->deselect();
+			deselect();
 		}
-		s_selectedEntity = this;
-
+		s_selectedEntity = e;
 		UI_EcoSystem::setSelectedEntity(s_selectedEntity);
 	}
 	void Entity::deselect()
 	{
-		s_log.logInfo("Entity deselected: " + getName());
+		if(s_selectedEntity)
+			s_log.logInfo("Entity deselected: " + s_selectedEntity->getName());
 		s_selectedEntity = nullptr;
 		UI_EcoSystem::setSelectedEntity(s_selectedEntity);
 	}
@@ -49,6 +53,18 @@ namespace EcoSystem
 	void Entity::attachSelectorButtonToCollider(bool doesAttach)
 	{
 		m_selectButton->attachToCollider(doesAttach);
+	}
+
+	void Entity::drawGizmos(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		// draw rectangle around the entity
+		QSFML::Utilities::AABB box = getBoundingBox();
+		sf::RectangleShape rect(box.getSize());
+		rect.setPosition(box.getPos());
+		rect.setFillColor(sf::Color::Transparent);
+		rect.setOutlineColor(sf::Color::Red);
+		rect.setOutlineThickness(1);
+		target.draw(rect, states);
 	}
 
 	void Entity::onClickButtonFallingEdge()

@@ -9,6 +9,9 @@ using namespace QSFML::Objects;
 
 namespace EcoSystem
 {
+
+	GameObject* createEntitySelectFunctionality();
+
     UI_EcoSystem::UI_EcoSystem(QWidget* parent)
         : QWidget(parent)
     {
@@ -83,12 +86,73 @@ namespace EcoSystem
 
         DefaultEditor* defaultEditor = new DefaultEditor("Editor",sf::Vector2f(mapChunkCount * (unsigned)QSFML::Utilities::Chunk::CHUNK_SIZE));
         defaultEditor->getGrid()->setEnabled(false);
-        defaultEditor->getCamera()->setMinZoom(0.1);
+        defaultEditor->getCamera()->setMinZoom(0.05);
         defaultEditor->getCamera()->setMaxZoom(10);
+		
+
+		
+		
         m_scene->addObject(defaultEditor);
+		m_scene->addObject(createEntitySelectFunctionality());
 
 		EcoSystem::Map* map = new EcoSystem::Map(mapChunkCount);
+        map->setRenderLayer(QSFML::RenderLayer::layer_0);
 		m_scene->addObject(map);
+
+        // Create sheep
+		EcoSystem::Animals::Sheep* sheep = new EcoSystem::Animals::Sheep();
+		sheep->setPosition(sf::Vector2f(32, 32));
+        sheep->setRenderLayer(QSFML::RenderLayer::layer_1);
+		m_scene->addObject(sheep);
+
+
         m_scene->start();
     }
+
+	GameObject* createEntitySelectFunctionality()
+	{
+		static GameObject* controller = nullptr;
+		if (controller)
+			return controller;
+		controller = new GameObject("AnimalController");
+		controller->addUpdateFunction([](GameObject&)
+			{
+				Entity* selectedEntity = Entity::getSelected();
+				if (!selectedEntity)
+					return;
+				Animals::Animal* animal = dynamic_cast<Animals::Animal*>(selectedEntity);
+
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
+					Entity::deselect();
+
+				if (animal)
+				{
+					Controller::PlayerController::updateSelectedAnimal(animal);
+					return;
+				}
+			});
+
+
+		// Draw Animal info
+		controller->addDrawFunction([](const GameObject&, sf::RenderTarget& target, sf::RenderStates states)
+			{
+				Entity* selectedEntity = Entity::getSelected();
+				if (selectedEntity)
+				{
+                    states.transform = selectedEntity->getGlobalTransform();
+					Animals::Animal* animal = dynamic_cast<Animals::Animal*>(selectedEntity);
+					if (animal)
+					{
+						Controller::PlayerController::drawSelectedAnimal(animal, target, states);
+						return;
+					}
+				}
+			});
+		controller->setRenderLayer(RenderLayer::layer_5);
+		return controller;
+	}
+
 }
+
+
+
