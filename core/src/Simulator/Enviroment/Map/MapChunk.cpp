@@ -10,6 +10,13 @@ namespace EcoSystem
 	{
 	}
 
+	size_t MapChunk::getSeed()
+	{
+		QSFML::Utilities::RandomEngine::init();
+		static size_t seed = QSFML::Utilities::RandomEngine::getInt(0, 10000);
+		return seed;
+	}
+
 	void MapChunk::onGenerate()
 	{
 		MapChunkData *chunkData = new MapChunkData();
@@ -26,14 +33,15 @@ namespace EcoSystem
 		noise1.SetCellularDistanceFunction(FastNoiseLite::CellularDistanceFunction_EuclideanSq);
 		noise1.SetCellularReturnType(FastNoiseLite::CellularReturnType_Distance);
 		noise1.SetFractalType(FastNoiseLite::FractalType::FractalType_FBm);
-		noise1.SetSeed(1234);
+		noise1.SetSeed(getSeed());
 
 		static FastNoiseLite noise2;
 		noise2.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
 		noise2.SetFractalOctaves(1);
 		noise2.SetFractalWeightedStrength(0.0);
-		noise2.SetFrequency(0.005);
+		noise2.SetFrequency(0.03);
 		noise2.SetFractalType(FastNoiseLite::FractalType::FractalType_Ridged);
+		noise2.SetSeed(getSeed() + 1);
 
 		float scale = 4;
 		for (size_t x = 0; x < CHUNK_SIZE; x++)
@@ -48,7 +56,7 @@ namespace EcoSystem
 
 				float riverNoise = (0.92 - noise2Val) * 2;
 
-				MapTileType tileType = MapTileType::Dirt;
+				MapTileType tileType = MapTileType::Grass;
 				float riverRange = 0.2;
 				if (riverNoise < riverRange)
 				{

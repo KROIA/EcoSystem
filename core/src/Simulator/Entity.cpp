@@ -21,7 +21,10 @@ namespace EcoSystem
 	}
 	Entity::~Entity()
 	{
-
+		if (s_selectedEntity == this)
+		{
+			deselect();
+		}
 	}
 
 	OBJECT_IMPL(Entity);
@@ -40,12 +43,21 @@ namespace EcoSystem
 			deselect();
 		}
 		s_selectedEntity = e;
+#ifdef _DEBUG
+		if(s_selectedEntity)
+			s_selectedEntity->enableDrawGizmosRecursive(true);
+#endif
 		UI_EcoSystem::setSelectedEntity(s_selectedEntity);
 	}
 	void Entity::deselect()
 	{
-		if(s_selectedEntity)
+		if (s_selectedEntity)
+		{
 			s_log.logInfo("Entity deselected: " + s_selectedEntity->getName());
+#ifdef _DEBUG
+			s_selectedEntity->enableDrawGizmosRecursive(false);
+#endif
+		}
 		s_selectedEntity = nullptr;
 		UI_EcoSystem::setSelectedEntity(s_selectedEntity);
 	}
@@ -55,17 +67,10 @@ namespace EcoSystem
 		m_selectButton->attachToCollider(doesAttach);
 	}
 
-	void Entity::drawGizmos(sf::RenderTarget& target, sf::RenderStates states) const
-	{
-		// draw rectangle around the entity
-		QSFML::Utilities::AABB box = getBoundingBox();
-		sf::RectangleShape rect(box.getSize());
-		rect.setPosition(box.getPos());
-		rect.setFillColor(sf::Color::Transparent);
-		rect.setOutlineColor(sf::Color::Red);
-		rect.setOutlineThickness(1);
-		target.draw(rect, states);
-	}
+	//void Entity::drawGizmos(sf::RenderTarget& target, sf::RenderStates) const
+	//{
+	//	
+	//}
 
 	void Entity::onClickButtonFallingEdge()
 	{

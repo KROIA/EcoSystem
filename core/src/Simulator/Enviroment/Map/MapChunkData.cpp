@@ -18,6 +18,8 @@ namespace EcoSystem
 
 
 	int MapChunkData::s_waterTextureWaveIndex = 0;
+	float MapChunkData::m_grassGrowthRate = 0.01;
+	float MapChunkData::m_dirtFertilityRate = 0.1;
 
 	MapChunkData::MapChunkData()
 		: QSFML::Utilities::ChunkData()
@@ -95,7 +97,7 @@ namespace EcoSystem
 			float growth = tile.data.grass.growth;
 			if (growth < 1.0f)
 			{
-				growth += deltaT * float(rand()%100)/100.f * 0.1;
+				growth += deltaT * float(rand()%100)/100.f * m_grassGrowthRate;
 				if (growth > 1.0f) [[unlikely]]
 				{
 					growth = 1.0f;
@@ -113,7 +115,7 @@ namespace EcoSystem
 			float fertilization = tile.data.dirt.fertility;
 			if (fertilization < 1.0f)
 			{
-				fertilization += deltaT * float(rand() % 100) / 100.f * 0.1;
+				fertilization += deltaT * float(rand() % 100) / 100.f * m_dirtFertilityRate;
 				if (fertilization >= 1.0f) [[unlikely]]
 				{
 					MapTile grassTile;

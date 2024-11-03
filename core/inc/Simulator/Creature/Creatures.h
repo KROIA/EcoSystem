@@ -1,4 +1,4 @@
 #pragma once
 
-#include "Animals/Animals.h"
-#include "Plants/Plants.h"
+#include "Animal/Animals.h"
+#include "Plant/Plants.h"

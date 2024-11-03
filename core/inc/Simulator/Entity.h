@@ -27,7 +27,7 @@ namespace EcoSystem
 
 		void attachSelectorButtonToCollider(bool doesAttach);
 
-		virtual void drawGizmos(sf::RenderTarget& target, sf::RenderStates states) const;
+		//virtual void drawGizmos(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	protected:
 

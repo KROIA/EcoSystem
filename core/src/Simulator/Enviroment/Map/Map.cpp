@@ -106,15 +106,15 @@ namespace EcoSystem
 			m_chunkData.push_back(chunkData);
 		}
 	}	
-	MapChunkData::MapTile& Map::getTile(const sf::Vector2f& pos) const
+	MapChunkData::MapTile& Map::getTile(const sf::Vector2f& pos)
 	{
 		if (!isInMap(pos))
 		{
-			getLogger().logWarning("Position is out of map bounds: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
+			//getLogger().logWarning("Position is out of map bounds: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
 			static MapChunkData::MapTile dummy;
 			return dummy;
 		}
-		Chunk* chunk = m_chunkManager->getChunk(pos);
+		Chunk* chunk = s_instance->m_chunkManager->getChunk(pos);
 		if (chunk)
 		{
 			// Get the chunks relative pos
@@ -124,16 +124,16 @@ namespace EcoSystem
 		static MapChunkData::MapTile dummy;
 		return dummy;
 	}
-	MapChunkData::MapTile& Map::getTile(const sf::Vector2i& pos) const
+	MapChunkData::MapTile& Map::getTile(const sf::Vector2i& pos)
 	{
 		sf::Vector2f posf = sf::Vector2f(pos);
 		if (!isInMap(posf))
 		{
-			getLogger().logWarning("Position is out of map bounds: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
+			//getLogger().logWarning("Position is out of map bounds: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
 			static MapChunkData::MapTile dummy;
 			return dummy;
 		}
-		Chunk* chunk = m_chunkManager->getChunk(posf);
+		Chunk* chunk = s_instance->m_chunkManager->getChunk(posf);
 		if (chunk)
 		{
 			// Get the chunks relative pos
@@ -143,16 +143,16 @@ namespace EcoSystem
 		static MapChunkData::MapTile dummy;
 		return dummy;
 	}
-	MapChunkData::MapTile& Map::getTile(float x, float y) const
+	MapChunkData::MapTile& Map::getTile(float x, float y)
 	{
 		sf::Vector2f pos(x,y);
 		if (!isInMap(pos))
 		{
-			getLogger().logWarning("Position is out of map bounds: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
+			//getLogger().logWarning("Position is out of map bounds: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
 			static MapChunkData::MapTile dummy;
 			return dummy;
 		}
-		Chunk* chunk = m_chunkManager->getChunk(pos);
+		Chunk* chunk = s_instance->m_chunkManager->getChunk(pos);
 		if (chunk)
 		{
 			// Get the chunks relative pos
@@ -166,10 +166,10 @@ namespace EcoSystem
 	{
 		if (!isInMap(pos))
 		{
-			getLogger().logWarning("Position is out of map bounds: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
+			//getLogger().logWarning("Position is out of map bounds: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
 			return;
 		}
-		Chunk* chunk = m_chunkManager->getChunk(pos);
+		Chunk* chunk = s_instance->m_chunkManager->getChunk(pos);
 		if (chunk)
 		{
 			// Get the chunks relative pos
@@ -184,10 +184,10 @@ namespace EcoSystem
 	{
 		if (!isInMap(pos))
 		{
-			getLogger().logWarning("Position is out of map bounds: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
+			//getLogger().logWarning("Position is out of map bounds: " + std::to_string(pos.x) + ", " + std::to_string(pos.y));
 			return;
 		}
-		Chunk* chunk = m_chunkManager->getChunk(pos);
+		Chunk* chunk = s_instance->m_chunkManager->getChunk(pos);
 		if (chunk)
 		{
 			// Get the chunks relative pos
@@ -199,13 +199,33 @@ namespace EcoSystem
 		}
 	}
 
-	bool Map::isInMap(const sf::Vector2f& pos) const
+	bool Map::isInMap(const sf::Vector2f& pos)
 	{
 		return !(
 			pos.x < 0 || 
 			pos.y < 0 || 
-			pos.x >= m_chunkCount.x * Chunk::CHUNK_SIZE || 
-			pos.y >= m_chunkCount.y * Chunk::CHUNK_SIZE);
+			pos.x >= s_instance->m_chunkCount.x * Chunk::CHUNK_SIZE || 
+			pos.y >= s_instance->m_chunkCount.y * Chunk::CHUNK_SIZE);
+	}
+	sf::Vector2f Map::getNearestMapBorderDirection(const sf::Vector2f& pos)
+	{
+		sf::Vector2f dir;
+		if (pos.x < 0)
+			dir.x = -pos.x;
+		else if (pos.x >= s_instance->m_chunkCount.x * Chunk::CHUNK_SIZE)
+			dir.x = s_instance->m_chunkCount.x * Chunk::CHUNK_SIZE - pos.x;
+		if (pos.y < 0)
+			dir.y = -pos.y;
+		else if (pos.y >= s_instance->m_chunkCount.y * Chunk::CHUNK_SIZE)
+			dir.y = s_instance->m_chunkCount.y * Chunk::CHUNK_SIZE - pos.y;
+		return dir;
+
+	}
+	sf::Vector2f Map::getRandomPosition(float borderPadding)
+	{
+		sf::Vector2f min(borderPadding, borderPadding);
+		sf::Vector2f max(s_instance->m_chunkCount.x * Chunk::CHUNK_SIZE - borderPadding, s_instance->m_chunkCount.y * Chunk::CHUNK_SIZE - borderPadding);
+		return QSFML::Utilities::RandomEngine::getVector(min, max);
 	}
 	
 	void Map::update()

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "EcoSystem_base.h"
-#include "Simulator/Creature/Animals/Animal.h"
+#include "Simulator/Creature/Animal/Animal.h"
 
 namespace EcoSystem
 {
@@ -12,8 +12,8 @@ namespace EcoSystem
 			PlayerController() = delete;
 			~PlayerController() = delete;
 		public:
-			static void updateSelectedAnimal(Animals::Animal* animal);
-			static void drawSelectedAnimal(Animals::Animal* animal, sf::RenderTarget& target, sf::RenderStates states);
+			static void updateAnimal(Animals::Animal* animal);
+			static void drawAnimal(Animals::Animal* animal, sf::RenderTarget& target, sf::RenderStates states);
 		};
 
 	}

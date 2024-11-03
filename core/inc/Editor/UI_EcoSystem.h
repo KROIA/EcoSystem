@@ -28,6 +28,8 @@ namespace EcoSystem
 		static void start();
 		static void stop();
 
+	private slots:
+		void on_deltaT_slider_valueChanged(int value);
 	private:
 		void loadAssets();
 		void setupScene();

@@ -17,18 +17,26 @@ namespace EcoSystem
 		Map(const sf::Vector2u &chunkCount, const std::string& name = "Map");
 		Map(const Map& other) = delete;
 		~Map();
-
 		
 
 		void generateMap();
 
-		MapChunkData::MapTile& getTile(const sf::Vector2f& pos) const;
-		MapChunkData::MapTile& getTile(const sf::Vector2i& pos) const;
-		MapChunkData::MapTile& getTile(float x, float y) const;
-		void setTile(const sf::Vector2f& pos, const MapChunkData::MapTile& tile);
-		void setTile(const sf::Vector2f& pos, MapTileType type);
+		static void setGrassGrowthRate(float rate) { MapChunkData::setGrassGrowthRate(rate); }
+		static float getGrassGrowthRate() { return MapChunkData::getGrassGrowthRate(); }
 
-		bool isInMap(const sf::Vector2f& pos) const;
+		static void setDirtFertilityRate(float rate) { MapChunkData::setDirtFertilityRate(rate); }
+		static float getDirtFertilityRate() { return MapChunkData::getDirtFertilityRate(); }
+
+		static MapChunkData::MapTile& getTile(const sf::Vector2f& pos);
+		static MapChunkData::MapTile& getTile(const sf::Vector2i& pos);
+		static MapChunkData::MapTile& getTile(float x, float y);
+		static void setTile(const sf::Vector2f& pos, const MapChunkData::MapTile& tile);
+		static void setTile(const sf::Vector2f& pos, MapTileType type);
+
+		static bool isInMap(const sf::Vector2f& pos);
+		static sf::Vector2f getNearestMapBorderDirection(const sf::Vector2f& pos);
+
+		static sf::Vector2f getRandomPosition(float borderPadding = 32);
 
 	private:
 		void update() override;

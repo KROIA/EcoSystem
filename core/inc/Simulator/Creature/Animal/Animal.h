@@ -30,6 +30,36 @@ namespace EcoSystem
 			};
 			
 		public:
+			struct SensoryData
+			{
+				struct Internal
+				{
+					float health;
+					float speed;
+					float demageSpeedMultiplier;
+					float fatSpeedMultiplier;
+					float staminaSpeedMultiplier;
+					float energy;
+					float hunger;
+					float thirst;
+					float fat;
+					float age;
+					float reproduction;
+					bool alive;
+				};
+				struct Enviromental
+				{
+					sf::Vector2f position;
+					sf::Vector2f direction;
+
+					// Vision points in world coordinates
+					std::vector<sf::Vector2f> visionPoints;
+				};
+
+				Internal internal;
+				Enviromental enviromental;
+			};
+
 			Animal(const sf::Texture &texture, const std::string& name = "Animal");
 			Animal(const Animal& other) = delete;
 			virtual ~Animal();
@@ -39,6 +69,10 @@ namespace EcoSystem
 			sf::Vector2f getHeadWorldPosition() const { return getTransform().transformPoint(headPosition); }
 			MapChunkData::MapTile& getMapTileBelowHead() const { return Map::getInstance()->getTile(getHeadWorldPosition()); }
 			
+			void setBodyDimensions(const std::array<QSFML::Utilities::AABB, TextureCoords::bodyCount>& bodyDimensions);
+			const std::array<QSFML::Utilities::AABB, TextureCoords::bodyCount>& getBodyDimensions() const { return bodyDimensions; }
+			const QSFML::Utilities::AABB& getCurrentBodyDimension() const { return currentBodyDimension; }
+
 			void setVisionRays(const std::vector<sf::Vector2f>& visionRays);
 			const std::vector<sf::Vector2f>& getVisionRays() const { return visionRays; }
 
@@ -53,8 +87,8 @@ namespace EcoSystem
 
 			inline void setNormalSpeed(float speed) { this->normalSpeed = speed; speedChanged(); }
 			inline float getNormalSpeed() const { return normalSpeed; }
-			inline void setStainaSpeedMultiplier(float multiplier) { this->stainaSpeedMultiplier = multiplier; speedChanged(); }
-			inline float getStainaSpeedMultiplier() const { return stainaSpeedMultiplier; }
+			inline void setStaminaSpeedMultiplier(float multiplier) { this->staminaSpeedMultiplier = multiplier; speedChanged(); }
+			inline float getStaminaSpeedMultiplier() const { return staminaSpeedMultiplier; }
 			inline float getDemageSpeedMultiplier() const { return demageSpeedMultiplier; }
 			inline float getFatSpeedMultiplier() const { return fatSpeedMultiplier; }
 			inline float getSpeed() const { return normalSpeed * demageSpeedMultiplier * fatSpeedMultiplier; }
@@ -111,6 +145,8 @@ namespace EcoSystem
 
 			inline float getWalkedDistance() const { return walkedDistance; }
 			inline float getTurnedDistance() const { return turnedDistance; }
+			inline float getWalkedBackwardsDistance() const { return walkedBackwardsDistance; }
+			inline float getTurnedLeftDistance() const { return turnedLeftDistance; }
 
 			std::vector<sf::Vector2f> getVisionPoints() const;
 			std::vector<sf::Vector2f> getVisionGlobalPoints() const;
@@ -122,51 +158,38 @@ namespace EcoSystem
 				return sf::Vector2f(static_cast<float>(std::cos(rot * M_PI / 180.0)), 
 									static_cast<float>(std::sin(rot * M_PI / 180.0)));
 			}
-			void walkForward()
-			{
-				//walkAmount = amount;
-				double rot = static_cast<double>(GameObject::getRotation());
-				sf::Vector2f direction(static_cast<float>(std::sin(rot * M_PI / 180.0)),
-									   static_cast<float>(-std::cos(rot * M_PI / 180.0)));
-				GameObject::move(direction * speed);
-				walkedDistance += speed;
-				consumeEnergy(walkEnergyCost);
-				lastMoveTimePoint = GameObject::getAge();
-			}
-			void walkBackward()
-			{
-				double rot = static_cast<double>(GameObject::getRotation());
-				sf::Vector2f direction(static_cast<float>(std::sin(rot * M_PI / 180.0)),
-									   static_cast<float>(-std::cos(rot * M_PI / 180.0)));
-				GameObject::move(-direction * speed);
-				consumeEnergy(walkEnergyCost);
-				walkedDistance += speed;
-				lastMoveTimePoint = GameObject::getAge();
-			}
-			void turnRight()
-			{
-				GameObject::rotate(speed * 90.f);
-				turnedDistance += speed * 90.f;
-				consumeEnergy(walkEnergyCost);
-				lastMoveTimePoint = GameObject::getAge();
-			}
-			void turnLeft()
-			{
-				GameObject::rotate(-speed * 90.f);
-				turnedDistance += speed * 90.f;
-				consumeEnergy(walkEnergyCost);
-				lastMoveTimePoint = GameObject::getAge();
-			}
+
+			SensoryData getSensoryData();
+			
+
+			virtual void tryEat() = 0;
+			virtual void tryDrink() = 0;
+			virtual void tryReproduce() = 0;
+			virtual void getsAttacked(float damage) = 0;
+			virtual void tryAttack() = 0;
+			virtual void getsHealed(float amount) = 0;
+			virtual void tryWalkForward(float speed = 1) = 0;
+			virtual void tryWalkBackward(float speed = 1) = 0;
+			virtual void tryTurnRight(float speed = 1) = 0;
+			virtual void tryTurnLeft(float speed = 1) = 0;
+
+
+			
+
+			virtual void showInfo(sf::RenderTarget& target, sf::RenderStates states);
+
+			void drawGizmos(sf::RenderTarget& target, sf::RenderStates states) const override;
+		protected:
 			virtual void eat(float amount);
 			virtual void drink(float amount);
 			virtual void damage(float amount);
 			virtual void heal(float amount);
 			virtual void consumeEnergy(float amount);
+			void walkForward(float speed);
+			void walkBackward(float speed);
+			void turnRight(float speed);
+			void turnLeft(float speed);
 
-			virtual void showInfo();
-
-			void drawGizmos(sf::RenderTarget& target, sf::RenderStates states) const override;
-		protected:
 			void onAwake() override;
 			virtual void update() override;
 			virtual void died() = 0;
@@ -191,13 +214,21 @@ namespace EcoSystem
 			{
 				GameObject::setOrigin(origin);
 			}
-
+			void checkPositionOutOfMap();
 
 			inline void updateBodyTexture()
 			{
 				unsigned int fatIndex = static_cast<int>((fat * static_cast<float>(TextureCoords::bodyCount-1)) / maxFat);
 				const QSFML::Assets::TextureMap::UVMapCoords& bodyCoords = textureMap.getUVMapCoords(TextureCoords::body + TextureCoords::bodyIncrement * fatIndex);
 				bodySprite->setTextureRect(bodyCoords.toIntRect());
+				currentBodyDimension = bodyDimensions[fatIndex];
+				bodyCollider->setVertecies({
+				currentBodyDimension.TL(),
+				currentBodyDimension.TR(),
+				currentBodyDimension.BR(),
+				currentBodyDimension.BL()
+					});
+				bodyCollider->updateColliderData();
 			}
 			inline void updateDemageTexture()
 			{
@@ -219,11 +250,14 @@ namespace EcoSystem
 				speedChanged();
 				updateDemageTexture();
 				if (health <= 0)
+				{
+					alive = false;
 					died();
+				}
 			}
 			inline void speedChanged()
 			{
-				speed = normalSpeed * demageSpeedMultiplier * fatSpeedMultiplier * stainaSpeedMultiplier;
+				speed = normalSpeed * demageSpeedMultiplier * fatSpeedMultiplier * staminaSpeedMultiplier;
 				if (speed > maxSpeed)
 					speed = maxSpeed;
 				else if (speed < 0)
@@ -279,7 +313,7 @@ namespace EcoSystem
 			float normalSpeed;
 			float demageSpeedMultiplier;
 			float fatSpeedMultiplier;
-			float stainaSpeedMultiplier;
+			float staminaSpeedMultiplier;
 			float maxSpeed;
 			float energy;
 			float maxEnergy;
@@ -299,10 +333,18 @@ namespace EcoSystem
 			bool alive;
 			double lastMoveTimePoint;
 			float walkedDistance;
+			float walkedBackwardsDistance;
 			float turnedDistance;
+			float turnedLeftDistance;
+			
+
+			
 
 			
 			sf::Vector2f headPosition;
+			
+			QSFML::Utilities::AABB currentBodyDimension;
+			std::array<QSFML::Utilities::AABB, TextureCoords::bodyCount> bodyDimensions;
 			std::vector<sf::Vector2f> visionRays;
 			struct Gizmos
 			{
@@ -315,6 +357,8 @@ namespace EcoSystem
 			QSFML::Assets::TextureMap textureMap;
 			sf::Sprite *bodySprite = nullptr;
 			sf::Sprite *demageSprite = nullptr;
+			QSFML::Components::Collider* bodyCollider = nullptr;
+
 		};
 	}
 }

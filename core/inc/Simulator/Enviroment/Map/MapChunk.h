@@ -10,6 +10,8 @@ namespace EcoSystem
 	public:
 		MapChunk(const sf::Vector2i& pos, const Resources& resources, float scale);
 
+		static size_t getSeed();
+
 	private:
 		void onGenerate() override;
 	};

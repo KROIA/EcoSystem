@@ -25,12 +25,12 @@ namespace EcoSystem
 		struct GrassTile
 		{
 			static constexpr unsigned int startTextureIndex = 0;
-			float growth = 0;
+			float growth = 0.5;
 		};
 		struct DirtTile
 		{
 			static constexpr unsigned int startTextureIndex = 5;
-			float fertility = 0;
+			float fertility = 0.5;
 		};
 		struct WaterTile
 		{
@@ -65,6 +65,13 @@ namespace EcoSystem
 			{
 			}
 		};
+
+		static void setGrassGrowthRate(float rate) { m_grassGrowthRate = rate; }
+		static float getGrassGrowthRate() { return m_grassGrowthRate; }
+		
+		static void setDirtFertilityRate(float rate) { m_dirtFertilityRate = rate; }
+		static float getDirtFertilityRate() { return m_dirtFertilityRate; }
+		
 		MapChunkData();
 		~MapChunkData();
 
@@ -95,6 +102,7 @@ namespace EcoSystem
 
 		MapTile m_tiles[CHUNK_SIZE][CHUNK_SIZE];
 		static int s_waterTextureWaveIndex;
-
+		static float m_grassGrowthRate;
+		static float m_dirtFertilityRate;
 	};
 }

@@ -5,4 +5,5 @@
 
 #include "Enviroment/Map/Map.h"
 
-#include "Simulator/Creature/Animals/Controllers/PlayerController.h"
+#include "Simulator/Creature/Animal/Controller/PlayerController.h"
+#include "Simulator/Creature/Animal/Controller/AiSheepController.h"
