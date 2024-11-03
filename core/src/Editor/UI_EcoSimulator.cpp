@@ -10,8 +10,8 @@ using namespace QSFML::Objects;
 namespace EcoSystem
 {
 
-	GameObject* createEntitySelectFunctionality();
-    GameObject* createAiSheepTrainer();
+	void createEntitySelectFunctionality(QSFML::Scene* scene);
+    void createAiSheepTrainer(QSFML::Scene* scene);
 
     UI_EcoSystem::UI_EcoSystem(QWidget* parent)
         : QWidget(parent)
@@ -102,7 +102,7 @@ namespace EcoSystem
 		
 		
         m_scene->addObject(defaultEditor);
-		m_scene->addObject(createEntitySelectFunctionality());
+		createEntitySelectFunctionality(m_scene);
 
 		EcoSystem::Map* map = new EcoSystem::Map(mapChunkCount);
         map->setRenderLayer(QSFML::RenderLayer::layer_0);
@@ -114,15 +114,15 @@ namespace EcoSystem
         //sheep->setRenderLayer(QSFML::RenderLayer::layer_1);
 		//m_scene->addObject(sheep);
 
-		m_scene->addObject(createAiSheepTrainer());
+		createAiSheepTrainer(m_scene);
         m_scene->start();
     }
 
-	GameObject* createEntitySelectFunctionality()
+	void createEntitySelectFunctionality(QSFML::Scene* scene)
 	{
 		static GameObject* controller = nullptr;
 		if (controller)
-			return controller;
+			return;
 		controller = new GameObject("AnimalController");
 		controller->addUpdateFunction([](GameObject&)
 			{
@@ -158,10 +158,11 @@ namespace EcoSystem
 				}
 			});
 		controller->setRenderLayer(RenderLayer::layer_5);
-		return controller;
+		
+		scene->addObject(controller);
 	}
 
-    GameObject* createAiSheepTrainer()
+    void createAiSheepTrainer(QSFML::Scene* scene)
     {
         static GameObject* trainer = nullptr;
         struct Bundle
@@ -174,7 +175,7 @@ namespace EcoSystem
             std::vector<Bundle> bundles;
 			size_t iteration = 0;
             size_t step = 0;
-            size_t sheepCount = 200;
+            size_t sheepCount = 500;
             float averageScore = 0;
 			GameObject* trainer = nullptr;
             bool showGizmos = false;
@@ -184,13 +185,13 @@ namespace EcoSystem
 		
 
         if (trainer)
-            return trainer;
+            return;
         TrainerData* data = new TrainerData();
         NeuralNet::LearnAlgo::GeneticLearn::setCrossoverCountPercentage(50);
-		NeuralNet::LearnAlgo::GeneticLearn::setMutationCountPercentage(50);
-		NeuralNet::LearnAlgo::GeneticLearn::setMutationRate(0.05);
+		NeuralNet::LearnAlgo::GeneticLearn::setMutationCountPercentage(10);
+		NeuralNet::LearnAlgo::GeneticLearn::setMutationRate(0.005);
 
-        
+        scene->addObject(Controller::AiController::getObject());
 
         trainer = new GameObject("AiSheepTrainer");
 		data->trainer = trainer;
@@ -296,7 +297,7 @@ namespace EcoSystem
 
 			});
 
-        return trainer;
+		scene->addObject(trainer);
     }
 }
 

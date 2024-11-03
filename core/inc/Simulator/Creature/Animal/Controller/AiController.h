@@ -11,6 +11,8 @@ namespace EcoSystem
 		class ECO_SYSTEM_EXPORT AiController
 		{
 		public:
+			static QSFML::Objects::GameObjectPtr getObject();
+
 			AiController();
 			virtual ~AiController();
 

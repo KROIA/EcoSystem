@@ -22,7 +22,7 @@ namespace EcoSystem
 			std::vector<float> getNNInputData();
 			void processOutput(const std::vector<float>& output);
 
-			
+			NeuralNet::Visualisation::CustomConnectedNeuralNetPainter *m_visu = nullptr;
 		};
 	}
 }

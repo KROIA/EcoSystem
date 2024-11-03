@@ -35,12 +35,29 @@ namespace EcoSystem
 
 			NeuralNet::FullConnectedNeuralNet* net = new NeuralNet::FullConnectedNeuralNet(inputIDs, hiddenLayerCount, hiddenLayerSize, outputIDs);
 			net->setActivationType(NeuralNet::Activation::Type::tanh_);
+			m_visu = net->createVisualisation();
+			
+			//m_visu->setLayerSpacing(2);
+			//m_visu->setNeuronSpacing(1);
+			//m_visu->setNeuronRadius(0.1);
+			//
+			//m_visu->resetPositions();
+			//m_visu->buildNetwork(); 
+			//m_visu->setNeuronOutlineThickness(0.01);
+			//m_visu->setNeuronTextSize(0.01);
+			//m_visu->setConnectionWidth(0.01);
+
+
 			setNeuralNet(net);
+			getObject()->addComponent(m_visu);
+			m_visu->setEnabled(false);
 			
 		}
 
 		AiSheepController::~AiSheepController()
 		{
+			//m_visu->deleteLater();
+			delete getNeuralNet();
 		}
 
 		void AiSheepController::update()
@@ -50,7 +67,25 @@ namespace EcoSystem
 			net->setInputValues(inputData);
 			net->update();
 			std::vector<float> output = net->getOutputValues();
-			processOutput(output);			
+			processOutput(output);	
+
+			Entity* selected = Entity::getSelected();
+			if (selected == getAnimal())
+			{
+				//getObject()->setPosition(getAnimal()->getPosition()+sf::Vector2f(1,0));
+				auto* obj = getObject();
+				QSFML::Utilities::AABB view = obj->getCameraViewRect();
+				float height = view.getSize().y;
+				obj->setPosition(view.TL()+ sf::Vector2f(height/100, height / 100));
+				
+				static float scale = 0.0007;
+				obj->setScale(height * scale, height * scale);
+				m_visu->setEnabled(true);
+			}
+			else
+			{
+				m_visu->setEnabled(false);
+			}
 		}
 		float AiSheepController::getFitness()
 		{
