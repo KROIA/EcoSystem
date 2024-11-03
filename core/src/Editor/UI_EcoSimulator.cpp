@@ -175,7 +175,7 @@ namespace EcoSystem
             std::vector<Bundle> bundles;
 			size_t iteration = 0;
             size_t step = 0;
-            size_t sheepCount = 500;
+            size_t sheepCount = 100;
             float averageScore = 0;
 			GameObject* trainer = nullptr;
             bool showGizmos = false;
